@@ -1,12 +1,13 @@
 ﻿@using RunGroopWebApp.Data.Enum
-@model Club
+@using RunGroopWebApp.ViewModels
+@model CreateClubViewModel
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
 }
 <h1>Create</h1>
-<form asp-action="Create" class=" d-flex flex-column align-items-center" method="post">
+<form asp-action="Create" class=" d-flex flex-column align-items-center" method="post" enctype="multipart/form-data">
     <div class="mb-3">
         <label asp-for="Title" class="form-label">Title</label>
         <input asp-for="Title" class="form-control w-100" placeholder="Enter Title">
@@ -17,11 +18,7 @@
         <input asp-for="Description" class="form-control" placeholder="Enter Description">
         <span asp-validation-for="Description" class="text-danger"></span>
     </div>
-    <div class="mb-3">
-        <label asp-for="Image" class="form-label">Description</label>
-        <input asp-for="Image" class="form-control" placeholder="Enter Description">
-        <span asp-validation-for="Image" class="text-danger"></span>
-    </div>
+
     <div class="mb-3">
         <label asp-for="ClubCategory" class="form-label">Club Category</label>
         <select asp-for="ClubCategory" asp-items="@Html.GetEnumSelectList<ClubCategory>()">
@@ -43,6 +40,11 @@
         <label asp-for="Address.City" class="form-label">City</label>
         <input asp-for="Address.City" class="form-control" placeholder="Enter City">
         <span asp-validation-for="Address.City" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Image" class="form-label">Image</label>
+        <input asp-for="Image" type="file" class="form-control" placeholder="Enter Image">
+        <span asp-validation-for="Image" class="text-danger"></span>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
