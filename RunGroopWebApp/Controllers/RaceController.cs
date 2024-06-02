@@ -18,11 +18,24 @@ namespace RunGroopWebApp.Controllers
             IEnumerable<Race> races = await _context.GetAll();
             return View(races);
         }
-  
+
         public async Task<IActionResult> Details(int id)
         {
             Race race = await _context.GetRaceById(id);
             return View(race);
+        }
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Create(Race race)
+        {
+            if(!ModelState.IsValid) 
+                return View(race);
+            _context.Add(race);
+            return RedirectToAction("Index");
         }
     }
 }
