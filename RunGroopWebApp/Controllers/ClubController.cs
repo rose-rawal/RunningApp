@@ -57,6 +57,15 @@ namespace RunGroopWebApp.Controllers
             }
             return View(club);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var data=await _context.GetClubById(id);
+            if(data == null)
+                return View(null);
+            return View(data);
+        }
         
     }
 }
