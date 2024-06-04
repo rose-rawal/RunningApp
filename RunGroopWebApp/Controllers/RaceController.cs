@@ -56,5 +56,51 @@ namespace RunGroopWebApp.Controllers
                 
            
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var data=_context.GetRaceById(id);
+            if(data == null)
+                return View("Not Found");
+            var dataStr = new CreateRaceViewModel
+            {
+                Title = data.Result.Title,
+                Description = data.Result.Description,
+                AddressId = data.Result.AddressId,
+                Address = data.Result.Address,
+                RaceCategory = data.Result.RaceCategory,
+            };
+            return View(dataStr);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, CreateRaceViewModel data)
+        {
+            if (!ModelState.IsValid)
+                return View("Error posting");
+            var oldData = await _context.GetRaceById(id);
+            try
+            {
+                _photoService.DeletePhotoAsync(oldData.Image);
+                var newImage = await _photoService.AddPhotoAsync(data.Image);
+                oldData.Image = newImage.Url.ToString();
+                oldData.RaceCategory = data.RaceCategory;
+                oldData.Title = data.Title;
+                oldData.Description = data.Description;
+                oldData.AddressId = data.AddressId;
+                oldData.Address = data.Address;
+                bool isSaved = _context.Save();
+                if (isSaved)
+                    return RedirectToAction("Index");
+
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "Error Deleting Image");
+                return View(data);
+            }
+            return View(data);
+        }
     }
 }
